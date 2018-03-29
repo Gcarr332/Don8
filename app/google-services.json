@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1009226490672",
+    "firebase_url": "https://don8-1eb66.firebaseio.com",
+    "project_id": "don8-1eb66",
+    "storage_bucket": "don8-1eb66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009226490672:android:81bac440a71c57c7",
+        "android_client_info": {
+          "package_name": "app.beacon.com.don8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009226490672-v216srv31orut34hoj8os7buqt14kc4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJgtCvsAHAee_7MUWx57CmyZBtgxYNT54"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

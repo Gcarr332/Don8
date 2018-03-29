@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSecondary"
+    tools:context="app.beacon.com.don8.userHomeActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="393dp"
+        android:layout_height="99dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/buskerOne"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.049" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/buskerOneName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="192dp"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/buskerOneEmail"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_alignStart="@+id/buskerOneGender"
+            android:layout_below="@+id/buskerOneName"
+            android:layout_marginTop="13dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/buskerOneBio"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_alignStart="@+id/buskerOneGender"
+            android:layout_below="@+id/buskerOneGender"
+            android:layout_marginTop="12dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/buskerOneGender"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/buskerOneEmail"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/payment1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/payment2"
+            android:layout_alignBottom="@+id/payment2"
+            android:layout_alignStart="@+id/payment4"
+            android:background="@color/white"
+            android:onClick="pay"
+            android:text="£1" />
+
+        <Button
+            android:id="@+id/payment2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/buskerOneBio"
+            android:layout_below="@+id/buskerOneBio"
+            android:layout_marginTop="13dp"
+            android:background="@color/white"
+            android:onClick="pay"
+            android:text="£2" />
+
+        <Button
+            android:id="@+id/payment3"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/payment4"
+            android:layout_alignBottom="@+id/payment4"
+            android:layout_alignStart="@+id/donation"
+            android:background="@color/white"
+            android:onClick="pay"
+            android:text="£3" />
+
+        <Button
+            android:id="@+id/payment4"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:background="@color/white"
+            android:onClick="pay"
+            android:text="£4" />
+
+        <Button
+            android:id="@+id/payment5"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/payment4"
+            android:layout_alignBottom="@+id/payment4"
+            android:layout_alignStart="@+id/payment2"
+            android:background="@color/white"
+            android:onClick="pay"
+            android:text="£5" />
+
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="93dp"
+            android:layout_height="4dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="97dp"
+            android:background="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.164" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="93dp"
+            android:layout_height="4dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/view2"
+            android:background="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.164" />
+
+        <TextView
+            android:id="@+id/donation"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/payment1"
+            android:layout_alignStart="@+id/buskerOneBio"
+            android:layout_alignTop="@+id/payment1"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/donation_amount"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignStart="@+id/payment4"
+            android:layout_below="@+id/payment4"
+            app:srcCompat="@drawable/paypal"
+            tools:layout_editor_absoluteX="142dp"
+            tools:layout_editor_absoluteY="557dp" />
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
