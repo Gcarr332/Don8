@@ -27,22 +27,18 @@ public class adminActivity extends AppCompatActivity {
         mSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String UUID = assignBusker1.getText().toString();
-//                Bundle basket = new Bundle();
-//                basket.putString("abc", UUID);
-                setUsername(adminActivity.this, assignBusker1.getText().toString());
-                Intent a = new Intent(adminActivity.this, loginActivity.class );
-//                a.putExtras(basket);
-                startActivity(a);
 
+                setUUID(adminActivity.this, assignBusker1.getText().toString());
+                Intent a = new Intent(adminActivity.this, loginActivity.class );
+                startActivity(a);
             }
         });
     }
 
-    public static void setUsername(Context context, String username) {
+    public static void setUUID(Context context, String UUID) {
         SharedPreferences prefs = context.getSharedPreferences("myAppPackage", 0);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("username", username);
+        editor.putString("UUID", UUID);
         editor.commit();
     }
 }

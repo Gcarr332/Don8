@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -113,7 +112,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         final FirebaseUser user = auth.getCurrentUser();
         userID = user.getUid();
 
-        Busker_1_UUID = getUsername(this).toString();
+        Busker_1_UUID = getUUID(this).toString();
         // mResponse = (TextView) findViewById(R.id.response);
 
         final NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -227,9 +226,9 @@ implements NavigationView.OnNavigationItemSelectedListener {
         editor.commit();
     }
 
-    public static String getUsername(Context context) {
+    public static String getUUID(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("myAppPackage", 0);
-        return prefs.getString("username", "");
+        return prefs.getString("UUID", "");
 
     }
 
@@ -432,7 +431,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
      final StorageReference islandRef = storageRef.child(Busker_1_UUID);
      String url = "https://firebasestorage.googleapis.com/v0/b/don8-1eb66.appspot.com/o/" + Busker_1_UUID + "?alt=media&token=<token>";
-    System.out.print(islandRef);
+     System.out.print(islandRef);
      setImageUrl(this, url);
 
      File localFile = null;
@@ -440,13 +439,11 @@ implements NavigationView.OnNavigationItemSelectedListener {
      try {
          // Local temp file has been created
          localFile = File.createTempFile("images", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-       //  addToGallery(this, Uri.fromFile(localFile));
+         //  addToGallery(this, Uri.fromFile(localFile));
      } catch (IOException e) {
          e.printStackTrace();
      }
      System.out.println("localFile=" + localFile.getAbsolutePath());
-
-
 
      islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
          @Override
@@ -454,9 +451,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
              System.out.println("Busker Profile Picture Downloaded");
              downloadDialog.hide();
-
-
-
          }
      }).addOnFailureListener(new OnFailureListener() {
          @Override
@@ -475,12 +469,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
          }
      });
  }
-
-    public static void addToGallery(Context context, Uri uri) {
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(uri);
-        context.sendBroadcast(intent);
-    }
 
     protected void onActivityResult(int requestCode,int resultCode, Intent data)
     {
