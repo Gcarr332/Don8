@@ -219,6 +219,14 @@ implements NavigationView.OnNavigationItemSelectedListener {
         return true;
     }
 
+
+    public void setImageUrl(Context context, String image) {
+        SharedPreferences prefs = context.getSharedPreferences("myAppPackage", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(userID.toString(), image);
+        editor.commit();
+    }
+
     public static String getUsername(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("myAppPackage", 0);
         return prefs.getString("username", "");
@@ -285,7 +293,12 @@ implements NavigationView.OnNavigationItemSelectedListener {
                     .replace(R.id.content_frame
                             , new settingsFragment())
                     .commit();
-        }  else if (id == R.id.nav_help) {
+        }  else if (id == R.id.nav_history) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame
+                            , new historyFragment())
+                    .commit();
+        } else if (id == R.id.nav_help) {
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame
                             , new helpFragment())
@@ -417,26 +430,32 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
  public void downloadImage() {
 
-     final StorageReference islandRef = storageRef.child(userID);
+     final StorageReference islandRef = storageRef.child(Busker_1_UUID);
+     String url = "https://firebasestorage.googleapis.com/v0/b/don8-1eb66.appspot.com/o/" + Busker_1_UUID + "?alt=media&token=<token>";
     System.out.print(islandRef);
+     setImageUrl(this, url);
+
      File localFile = null;
 
      try {
+         // Local temp file has been created
          localFile = File.createTempFile("images", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+       //  addToGallery(this, Uri.fromFile(localFile));
      } catch (IOException e) {
          e.printStackTrace();
      }
      System.out.println("localFile=" + localFile.getAbsolutePath());
 
+
+
      islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
          @Override
          public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-             // Local temp file has been created
 
              System.out.println("Busker Profile Picture Downloaded");
              downloadDialog.hide();
 
-         //    addToGallery(this,  );
+
 
          }
      }).addOnFailureListener(new OnFailureListener() {

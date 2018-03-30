@@ -17,11 +17,11 @@
 
 
         <ImageView
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/logo" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -44,6 +44,30 @@
             android:layout_height="wrap_content">
 
             <ToggleButton
+                android:id="@+id/toggleBut2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="ToggleButton"
+                android:textOff="Admin Account"
+                android:textOn="Admin Account"
+                android:visibility="invisible" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:hint="@string/hint_password"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@android:color/white" />
+
+            <ToggleButton
                 android:id="@+id/toggleBut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,32 +78,7 @@
                 android:textOff="Busker Account"
                 android:textOn="Busker Account" />
 
-            <ToggleButton
-                android:id="@+id/toggleBut2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:checked="false"
-                android:text="ToggleButton"
-                android:textOff="Admin Account"
-                android:textOn="Admin Account" />
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:hint="@string/hint_password"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@android:color/white" />
-
         </android.support.design.widget.TextInputLayout>
-
 
 
         <Button
@@ -102,7 +101,7 @@
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btn_reset_password"

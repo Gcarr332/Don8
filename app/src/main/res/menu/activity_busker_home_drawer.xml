@@ -13,10 +13,6 @@
             android:icon="@drawable/settings"
             android:title="Settings" />
         <item
-            android:id="@+id/nav_bio"
-            android:icon="@drawable/history"
-            android:title="Bio" />
-        <item
             android:id="@+id/nav_resources"
             android:icon="@drawable/resources"
             android:title="Resources" />

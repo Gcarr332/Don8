@@ -184,11 +184,6 @@ public class buskerHomeActivity extends AppCompatActivity
                     .replace(R.id.content_frame
                             , new settingsFragment())
                     .commit();
-        } else if (id == R.id.nav_bio) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new historyFragment())
-                    .commit();
         } else if (id == R.id.nav_resources) {
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame

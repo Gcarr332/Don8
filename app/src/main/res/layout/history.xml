@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/history"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp" />
 
     <ImageView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:id="@+id/imgView1"/>
+        android:id="@+id/buskerHistory" />
 
 </LinearLayout>
