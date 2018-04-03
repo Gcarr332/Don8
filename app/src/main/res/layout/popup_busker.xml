@@ -88,7 +88,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/payment1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             android:onClick="pay"
             android:text="£1" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/payment2"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             android:onClick="pay"
             android:text="£2" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/payment3"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
             android:onClick="pay"
             android:text="£3" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/payment4"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
             android:onClick="pay"
             android:text="£4" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/payment5"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

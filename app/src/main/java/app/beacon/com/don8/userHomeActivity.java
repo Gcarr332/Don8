@@ -3,14 +3,19 @@ package app.beacon.com.don8;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -92,6 +97,10 @@ implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
 
+    NotificationCompat.Builder notification;
+    private static final int NOTIFICATION_ID = 1;
+    private static final String NOTIFICATION_CHANNEL_ID = "my_notification_channel";
+
 
     EstimoteCloudCredentials cloudCredentials =
     new EstimoteCloudCredentials("don8-14g", "2813ab0ee27531cbbf78c73dc85eb42f");
@@ -104,6 +113,10 @@ implements NavigationView.OnNavigationItemSelectedListener {
         setSupportActionBar(toolbar);
         myDialog = new Dialog(this);
         downloadDialog = new ProgressDialog(userHomeActivity.this);
+    //    notification = new notificationCreator().createNotification(this);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        notification.setAutoCancel(true);
+
 
         //get firebase auth instance
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -112,7 +125,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         final FirebaseUser user = auth.getCurrentUser();
         userID = user.getUid();
 
-        Busker_1_UUID = getUUID(this).toString();
+
         // mResponse = (TextView) findViewById(R.id.response);
 
         final NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -155,6 +168,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 String emailAddress = dataSnapshot.child("users").child(userID).child("email").getValue(String.class);
+                Busker_1_UUID = dataSnapshot.child("beacon ownership").child("Beacon 1").child("UUID").getValue(String.class);
 
                 navUserEmail.setText(emailAddress);
             }
@@ -218,18 +232,11 @@ implements NavigationView.OnNavigationItemSelectedListener {
         return true;
     }
 
-
     public void setImageUrl(Context context, String image) {
         SharedPreferences prefs = context.getSharedPreferences("myAppPackage", 0);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(userID.toString(), image);
         editor.commit();
-    }
-
-    public static String getUUID(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("myAppPackage", 0);
-        return prefs.getString("UUID", "");
-
     }
 
     @Override
@@ -309,6 +316,73 @@ implements NavigationView.OnNavigationItemSelectedListener {
         return true;
     }
 
+//        public void createNotification(){
+
+//            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+//                notificationChannel.setDescription("Channel description");
+//                notificationChannel.enableLights(true);
+//                notificationChannel.setLightColor(Color.RED);
+//                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+//                notificationChannel.enableVibration(true);
+//                nm.createNotificationChannel(notificationChannel);
+//            }
+//            notification.setSmallIcon(R.drawable.logo);
+//            notification.setTicker("Ticker");
+//            notification.setWhen(System.currentTimeMillis());
+//            notification.setContentTitle("Title");
+//            notification.setContentText("Body Body Body Body Body Body Body Body Body ");
+//            notification.setChannelId(NOTIFICATION_CHANNEL_ID);
+//            notification.build();
+//
+//            Intent intent = new Intent(this, MainActivity.class);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//            notification.setContentIntent(pendingIntent);
+//
+//            nm.notify(NOTIFICATION_ID, notification.build());
+
+
+
+//            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+//                    .setSmallIcon(R.drawable.logo)
+//                    .setContentTitle(textTitle)
+//                    .setContentText(textContent)
+//                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+
+      //  }
+
+    public void createNotifications(Context context) {
+
+        if (Build.VERSION.SDK_INT < 26) {
+            return;
+        }
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel("default",
+                "Channel name",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription("Channel description");
+        notificationManager.createNotificationChannel(channel);
+
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, userHomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "default")
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("A Busker is Playing Nearby")
+                .setContentText("Click here to view their profile and donate via paypal!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify(0, notificationBuilder.build());
+
+    }
+
     private void startProximityObservation() {
         this.proximityObserver =
                 new ProximityObserverBuilder(getApplicationContext(), cloudCredentials)
@@ -320,6 +394,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         }
     })
             .withBalancedPowerMode()
+//            .withScannerInForegroundService(notification)
             .build();
 
         // The first zone is for the 1st busker.
@@ -331,7 +406,9 @@ implements NavigationView.OnNavigationItemSelectedListener {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "A busker is playing nearby!");
+
                         showPopup();
+                        createNotifications(userHomeActivity.this);
                         return null;
                     }
                 })
@@ -354,7 +431,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
     //Method to display pop-up showing buskers profile details when users enter proximity of their beacon.
     public void showPopup(){
-
         myDialog.setContentView(R.layout.popup_busker);
         myDialog.show();
 
@@ -395,6 +471,66 @@ implements NavigationView.OnNavigationItemSelectedListener {
         myDialog.hide();
     }
 
+//    public boolean onOptionsItemsSelected(MenuItem item) {
+//        boolean var;
+//        switch (item.getItemId()) {
+//            case 2131230748:
+//                this.showTriggerSetupDialog();
+//                Unit var2 = Unit.INSTANCE;
+//                var = true;
+//                break;
+//            default:
+//                var = super.onOptionsItemSelected(item);
+//        }
+//        return var;
+//    }
+
+//    public void showTriggerSetupDialog(){
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+//            Toast.makeText(this, "ProximityTrigger works only on devices with Android 8.0+", Toast.LENGTH_SHORT).show();
+//        } else {
+//            createTriggerDialog();
+//        }
+//    }
+
+//    private final AlertDialog createTriggerDialog() {
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                userHomeActivity.this);
+//
+//        // set title
+//        alertDialogBuilder.setTitle("Don8");
+//
+//        // set dialog message
+//        alertDialogBuilder
+//                .setMessage("Click yes to exit!")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,int id) {
+//                        notification = new notificationCreator().createTriggerNotification(userHomeActivity.this);
+//                        new ProximityTriggerBuilder(userHomeActivity.this)
+//                                .displayNotificationWhenInProximity(notification)
+//                                .build()
+//                                .start();
+//                    }
+//                })
+//                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,int id) {
+//                        notification = new notificationCreator().createTriggerNotification(userHomeActivity.this);
+//                        new ProximityTriggerBuilder(userHomeActivity.this).displayNotificationWhenInProximity(notification)
+//                                .build()
+//                                .start()
+//                                .stop();
+//                    }
+//                });
+//
+//        // create alert dialog
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//
+//        // show it
+//        alertDialog.show();
+//        return alertDialog;
+//    }
+
     void pay(View view){
         //Switch statement to determine the Paypal donation amount selected by the user.
         switch(view.getId())
@@ -418,7 +554,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
             throw new RuntimeException("Unknown button ID");
         }
 
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(paymentAmount), "GBP", "Test payment with Paypal",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(paymentAmount), "GBP", "Test Payment with Paypal",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         Intent intent = new Intent(this, PaymentActivity.class);
@@ -427,48 +563,48 @@ implements NavigationView.OnNavigationItemSelectedListener {
         startActivityForResult(intent, mPaypalRequestCode);
     }
 
- public void downloadImage() {
+    public void downloadImage() {
 
-     final StorageReference islandRef = storageRef.child(Busker_1_UUID);
-     String url = "https://firebasestorage.googleapis.com/v0/b/don8-1eb66.appspot.com/o/" + Busker_1_UUID + "?alt=media&token=<token>";
-     System.out.print(islandRef);
-     setImageUrl(this, url);
+        final StorageReference islandRef = storageRef.child(Busker_1_UUID);
+        String url = "https://firebasestorage.googleapis.com/v0/b/don8-1eb66.appspot.com/o/" + Busker_1_UUID + "?alt=media&token=<token>";
+        System.out.print(islandRef);
+        setImageUrl(this, url);
 
-     File localFile = null;
+        File localFile = null;
 
-     try {
-         // Local temp file has been created
-         localFile = File.createTempFile("images", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
-         //  addToGallery(this, Uri.fromFile(localFile));
-     } catch (IOException e) {
-         e.printStackTrace();
-     }
-     System.out.println("localFile=" + localFile.getAbsolutePath());
+        try {
+            // Local temp file has been created
+            localFile = File.createTempFile("images", ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+            //  addToGallery(this, Uri.fromFile(localFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("localFile=" + localFile.getAbsolutePath());
 
-     islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-         @Override
-         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-             System.out.println("Busker Profile Picture Downloaded");
-             downloadDialog.hide();
-         }
-     }).addOnFailureListener(new OnFailureListener() {
-         @Override
-         public void onFailure(@NonNull Exception exception) {
-             // Handle any errors
-             downloadDialog.hide();
-         }
-     }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-         @Override
-         public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-             //calculating progress percentage
-             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-             //displaying percentage in progress dialog
-             downloadDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-             downloadDialog.show();
-         }
-     });
- }
+                System.out.println("Busker Profile Picture Downloaded");
+                downloadDialog.hide();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                downloadDialog.hide();
+            }
+        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                //calculating progress percentage
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //displaying percentage in progress dialog
+                downloadDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                downloadDialog.show();
+            }
+        });
+    }
 
     protected void onActivityResult(int requestCode,int resultCode, Intent data)
     {
@@ -486,7 +622,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
                     String state = confirmation.getProofOfPayment().getState();
 
                     if(state.equals("approved")) {
-                        Toast.makeText(userHomeActivity.this, "Payment Successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(userHomeActivity.this, "Payment successful. Your donation history has been updated", Toast.LENGTH_SHORT).show();
                         //perform download
                         downloadImage();
                     }
@@ -500,3 +636,4 @@ implements NavigationView.OnNavigationItemSelectedListener {
         }
     }
 }
+
