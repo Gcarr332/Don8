@@ -93,14 +93,15 @@ public class loginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
+                                // signed in user is handled in the listener.
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
                                     if (password.length() < 6) {
                                         inputPassword.setError(getString(R.string.minimum_password));
                                     } else {
-                                        Toast.makeText(loginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(loginActivity.this, getString(R.string.auth_failed),
+                                        Toast.LENGTH_LONG).show();
                                     }
                                 } else {
                                     onAuthSuccess(task.getResult().getUser());
@@ -124,17 +125,16 @@ public class loginActivity extends AppCompatActivity {
                         startActivity(new Intent(loginActivity.this, userHomeActivity.class));
                         Toast.makeText(loginActivity.this, "You're Logged into your User Account", Toast.LENGTH_SHORT).show();
                         finish();
-                    } else if(Integer.parseInt(value) == 3){
-                        startActivity(new Intent(loginActivity.this, adminActivity.class));
-                        Toast.makeText(loginActivity.this, "You're Logged into your Admin Account", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-
-                    else {
+                    } else if(Integer.parseInt(value) == 2){
                         startActivity(new Intent(loginActivity.this, buskerHomeActivity.class));
                         Toast.makeText(loginActivity.this, "You're Logged into your Busker Account", Toast.LENGTH_SHORT).show();
                         finish();
 
+                    }
+                    else {
+                        startActivity(new Intent(loginActivity.this, adminActivity.class));
+                        Toast.makeText(loginActivity.this, "You're Logged into your Admin Account", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }
 

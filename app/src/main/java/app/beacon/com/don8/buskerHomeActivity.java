@@ -30,15 +30,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class buskerHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //Initialise variables
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
     private CircleImageView navProfilePicture;
     private TextView navBuskerName;
     private TextView navBuskerEmail;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
     private String userID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class buskerHomeActivity extends AppCompatActivity
         navBuskerName = (TextView) headerLayout.findViewById(R.id.navName);
         navBuskerEmail = (TextView) headerLayout.findViewById(R.id.navEmail);
 
+        //Set home frgament as the 1st fragment to display when user logs in.
         FragmentManager fragmentManager= getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame
@@ -82,7 +83,7 @@ public class buskerHomeActivity extends AppCompatActivity
 
         String url = "https://firebasestorage.googleapis.com/v0/b/don8-1eb66.appspot.com/o/" + userID + "?alt=media&token=<token>";
        // diskCacheStrategy() used to handle the disk cache and  memory cache is skipped using skipMemoryCache() method.
-       // This allows the busker to be able to change their profile picture on their profile page and prevents so users can view the most recent busker profile picture.
+       // This allows the busker to be able to change their profile picture on their profile page so users can view the most recent busker profile picture.
         Glide.with(getApplicationContext()).load(url).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(navProfilePicture);
 
         //Called anytime there is a change made in the database or initially when the activity is started.
@@ -90,9 +91,11 @@ public class buskerHomeActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                //Set the buskers username and email address under the users UUID within Firebase
                 String username = dataSnapshot.child("users").child(userID).child("full name").getValue(String.class);
                 String emailAddress = dataSnapshot.child("users").child(userID).child("email").getValue(String.class);
 
+                //Set Buskers name and email
                 navBuskerName.setText(username);
                 navBuskerEmail.setText(emailAddress);
             }
@@ -183,11 +186,6 @@ public class buskerHomeActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame
                             , new settingsFragment())
-                    .commit();
-        } else if (id == R.id.nav_resources) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new resourcesFragment())
                     .commit();
         } else if (id == R.id.nav_profile) {
             fragmentManager.beginTransaction()

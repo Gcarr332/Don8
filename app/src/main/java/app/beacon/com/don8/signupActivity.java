@@ -94,11 +94,10 @@ public class signupActivity extends AppCompatActivity {
                         .addOnCompleteListener(signupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(signupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(signupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(),
+                                Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
+                                // If sign in fails, display a message to the user. If sign in succeeds, new user is created.
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(signupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -106,11 +105,10 @@ public class signupActivity extends AppCompatActivity {
                                     onAuthSuccess(task.getResult().getUser());
                                     finish();
                                 }
-
                             }
                         });
-
             }
+
             private void onAuthSuccess(FirebaseUser user) {
                 if (toggleBut.isChecked()){
                     toggle_val = 2;
@@ -127,7 +125,6 @@ public class signupActivity extends AppCompatActivity {
                 writeNewUser(user.getUid(), toggle_val, user.getEmail());
 
                 // Go to loginActivity
-
                 finish();
             }
 
@@ -136,7 +133,7 @@ public class signupActivity extends AppCompatActivity {
                 User user = new User(Integer.toString(type), email);
                 if (type == 1){
                     mDatabase.child("users").child(userId).setValue(user);
-                } else if(type == 3){
+                } else if(type == 2){
                     mDatabase.child("users").child(userId).setValue(user);
                 }
                 else {

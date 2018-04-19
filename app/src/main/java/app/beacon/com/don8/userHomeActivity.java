@@ -118,6 +118,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         notification.setAutoCancel(true);
 
 
+
         //get firebase auth instance
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -138,7 +139,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
         mConfiguration = new PayPalConfiguration()
                 .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
                 .clientId(mPaypalClientId);
-
+        createNotifications(userHomeActivity.this);
         mService = new Intent(this, PayPalService.class);
         mService.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, mConfiguration); //configuration above
         startService(mService); // paypal service listening to calls to paypal app.
@@ -316,43 +317,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
         return true;
     }
 
-//        public void createNotification(){
-
-//            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
-//                notificationChannel.setDescription("Channel description");
-//                notificationChannel.enableLights(true);
-//                notificationChannel.setLightColor(Color.RED);
-//                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-//                notificationChannel.enableVibration(true);
-//                nm.createNotificationChannel(notificationChannel);
-//            }
-//            notification.setSmallIcon(R.drawable.logo);
-//            notification.setTicker("Ticker");
-//            notification.setWhen(System.currentTimeMillis());
-//            notification.setContentTitle("Title");
-//            notification.setContentText("Body Body Body Body Body Body Body Body Body ");
-//            notification.setChannelId(NOTIFICATION_CHANNEL_ID);
-//            notification.build();
-//
-//            Intent intent = new Intent(this, MainActivity.class);
-//            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//            notification.setContentIntent(pendingIntent);
-//
-//            nm.notify(NOTIFICATION_ID, notification.build());
-
-
-
-//            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                    .setSmallIcon(R.drawable.logo)
-//                    .setContentTitle(textTitle)
-//                    .setContentText(textContent)
-//                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-
-      //  }
-
     public void createNotifications(Context context) {
 
         if (Build.VERSION.SDK_INT < 26) {
@@ -373,8 +337,8 @@ implements NavigationView.OnNavigationItemSelectedListener {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "default")
                 .setSmallIcon(R.drawable.logo)
-                .setContentTitle("A Busker is Playing Nearby")
-                .setContentText("Click here to view their profile and donate via paypal!")
+                .setContentTitle("A Busker is Playing Nearby!")
+                .setContentText("Click here to view their profile and donate via Paypal!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
@@ -406,7 +370,6 @@ implements NavigationView.OnNavigationItemSelectedListener {
                     @Override
                     public Unit invoke(ProximityAttachment attachment) {
                         Log.d("app", "A busker is playing nearby!");
-
                         showPopup();
                         createNotifications(userHomeActivity.this);
                         return null;
@@ -554,7 +517,7 @@ implements NavigationView.OnNavigationItemSelectedListener {
             throw new RuntimeException("Unknown button ID");
         }
 
-        PayPalPayment payment = new PayPalPayment(new BigDecimal(paymentAmount), "GBP", "Test Payment with Paypal",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(paymentAmount), "GBP", "Donation Payment",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         Intent intent = new Intent(this, PaymentActivity.class);
